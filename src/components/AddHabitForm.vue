@@ -27,6 +27,7 @@ function addHabit() {
     const newHabit = {
       name: newHabitName.value,
       category: selectedCategory.value,
+      icon: categories.find(category => category.name === selectedCategory.value).icon,
       isCompleted: false,
     };
 
@@ -35,7 +36,7 @@ function addHabit() {
     newHabitName.value = '';
     selectedCategory.value = null;
   } else {
-    alert('Please enter a habit name and select a category.');
+    console.log('Please enter a habit name and select a category.');
   }
 }
 </script>

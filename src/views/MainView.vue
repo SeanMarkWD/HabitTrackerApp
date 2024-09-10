@@ -7,11 +7,7 @@ import HabitItem from '../components/HabitItem.vue';
 
 const router = useRouter();
 const past7Days = ref(generatePast7Days());
-const habits = ref([
-  { name: 'Exercise', isCompleted: false, category: 'workout' },
-  { name: 'Read', isCompleted: false, category: 'book' },
-  // Other habits...
-]);
+const habits = ref([]);
 
 const date = ref(router.currentRoute.value.params.date);
 
@@ -93,7 +89,7 @@ loadHabits();
             :key="habit.name"
             :habitName="habit.name"
             :isCompleted="habit.isCompleted"
-            :iconName="habit.category"
+            :iconName="habit.icon"
           />
         </ul>
       </div>

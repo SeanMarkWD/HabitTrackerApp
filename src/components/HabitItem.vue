@@ -2,6 +2,7 @@
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import HabitStreak from './HabitStreak.vue';
+import IconComponent from './IconComponent.vue';
 
 const props = defineProps({
   habitName: String,
@@ -26,14 +27,14 @@ const iconPath = computed(() => {
 });
 console.log(props.iconName);
 onMounted(() => {
-  console.log('iconName:', props.iconName);
+  console.log('iconName', props.iconName);
 });
 </script>
 
 <template>
   <li class="habit-item">
     <label>
-      <img :src="iconPath" alt="icon" class="icon" />
+      <IconComponent :iconName="iconName" />
       <input type="checkbox" v-model="isCompleted" @change="saveHabits" />
       <span>{{ habitName }}</span>
       <HabitStreak :habitName="habitName" :isCompleted="isCompleted" />

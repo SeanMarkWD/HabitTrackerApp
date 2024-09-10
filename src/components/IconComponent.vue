@@ -1,17 +1,10 @@
 <script setup>
 const props = defineProps({
-  categoryName: String,
-  iconName: String,
+  iconName: {
+    type: String,
+    required: true,
+  },
 });
-
-// import WorkoutIcon from '../assets/icons/run-svgrepo-com.svg';
-// import DietIcon from '../assets/icons/diet-juice-svgrepo-com.svg';
-// import MusicIcon from '../assets/icons/music-box-svgrepo-com.svg';
-// import ArtIcon from '../assets/icons/paint-brush-art-svgrepo-com.svg';
-// import TravelIcon from '../assets/icons/travel-svgrepo-com.svg';
-// import BookIcon from '../assets/icons/book-closed-svgrepo-com.svg';
-// import GamepadIcon from '../assets/icons/gamepad-svgrepo-com.svg';
-// import MeditationIcon from '../assets/icons/meditation-svgrepo-com.svg';
 
 const iconPath = new URL(`../assets/icons/${props.iconName}.svg`, import.meta.url).href;
 </script>
