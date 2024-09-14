@@ -15,14 +15,122 @@ a,
   padding: 3px;
 }
 
+.main-view {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.nav-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: center;
+  width: 100%;
+}
+
+.habit-column {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: 2rem;
+}
+
+.habit-column .category-selection {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.habit-column form {
+  margin-top: 1rem;
+}
+
+.habit-list {
+  margin-top: 20px;
+  width: 100%;
+}
+
 @media (hover: hover) {
   a:hover {
     background-color: hsla(160, 100%, 37%, 0.2);
   }
 }
 
-@media (min-width: 1024px) {
+@media only screen and (max-width: 600px) {
   body {
+    font-size: 18px;
+  }
+
+  .habit-list-view {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .habit-details {
+    margin: 0 auto;
+    width: 100%;
+    text-align: center;
+  }
+
+  .nav-buttons {
+    flex: 1 1 48%;
+  }
+
+  .habit-item {
+    display: block;
+    width: 100%;
+    margin: 0.5rem 0;
+  }
+
+  .habit-list {
+    width: 100%;
+  }
+
+  .habit-name {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width; 768px) {
+  .main-view {
+    flex-direction: column;
+  }
+
+  .nav-buttons {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .habit-column {
+    margin-left: 0;
+  }
+}
+
+@media only screen and (min-width: 600px) and (max-width: 1024px) {
+  .habit-list-view {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .habit-details {
+    width: 80%;
+  }
+
+  .habit-list {
+    width: 50%;
+    padding: 1rem;
+  }
+
+  .nav-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  body {
+    font-size: 20px;
     display: flex;
     place-items: center;
   }
@@ -31,5 +139,23 @@ a,
     display: grid;
     grid-template-columns: 1fr 1fr;
     padding: 0 2rem;
+  }
+
+  .habit-list-view {
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .habit-details {
+    width: 50%;
+  }
+
+  .habit-list {
+    width: 30%;
+  }
+
+  .habit-item {
+    width: 90%;
+    margin: 0.75rem 0;
   }
 }

@@ -3,7 +3,6 @@ import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import AddHabitForm from '../components/AddHabitForm.vue';
 import HabitItem from '../components/HabitItem.vue';
-// import HabitListView from '../views/HabitListView.vue';
 
 const router = useRouter();
 const past7Days = ref(generatePast7Days());
@@ -56,10 +55,10 @@ function addHabitToList(newHabit) {
   });
 }
 
-function updateHabits(updatedHabits) {
-  habits.value = updatedHabits;
-  saveHabits(date.value, habits.value);
-}
+// function updateHabits(updatedHabits) {
+//   habits.value = updatedHabits;
+//   saveHabits(date.value, habits.value);
+// }
 
 function saveHabits(date, habits) {
   localStorage.setItem(date, JSON.stringify(habits));
@@ -72,16 +71,11 @@ loadHabits();
   <div class="main-view">
     <header>
       <nav class="nav-buttons">
-        <!-- Navigation buttons for days -->
         <button @click="navigateToDay(day)" v-for="day in past7Days" :key="day">{{ day }}</button>
       </nav>
       <AddHabitForm @habit-added="addHabitToList" />
     </header>
     <main>
-      <!-- commented out, which used to contain HabitListView, before I started to implement the icons, and so it seems that HabitListView became redundant.
-       <HabitListView :habits="habits" @update-habits="updateHabits" :iconName = habit.category/>
-      -->
-      <!-- Render HabitItem directly -->
       <div class="habit-list">
         <ul>
           <HabitItem
@@ -98,16 +92,12 @@ loadHabits();
 </template>
 
 <style scoped>
-.main-view {
+header {
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20pc;
-}
-
-header {
-  line-height: 1.5;
-  max-height: 100vh;
+  gap: 20px;
 }
 
 nav {
@@ -133,6 +123,20 @@ nav a {
 
 nav a:first-of-type {
   border: 0;
+}
+
+.main-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.habit-adder-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center the input and tiles */
+  width: 100%;
 }
 
 @media (width >= 1024px) {

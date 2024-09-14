@@ -24,6 +24,7 @@ const props = defineProps({
 .category-item {
   display: flex;
   align-items: center;
+  color: #9e6240;
   gap: 8px;
 }
 </style>

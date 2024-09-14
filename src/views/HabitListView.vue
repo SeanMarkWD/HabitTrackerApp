@@ -49,7 +49,7 @@ function deleteHabit(habitName) {
 
 <template>
   <div class="habit-list-view">
-    <ul class="habit-list">
+    <ul class="habit-list card flex-column">
       <li v-for="(habit, index) in habits" :key="habit.name + index" class="habit-name">
         <div class="habit-details">
           <HabitItem

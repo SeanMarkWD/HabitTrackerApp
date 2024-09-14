@@ -43,38 +43,77 @@ function addHabit() {
 
 <template>
   <form @submit.prevent="addHabit">
-    <div>
-      <label for="habitName">New Habit</label>
-      <input
-        type="text"
-        v-model="newHabitName"
-        id="habitName"
-        placeholder="Enter habit name"
-        required
-      />
+    <div class="habit-selection">
+      <h2>Choose Habit</h2>
+      <p>Choose your daily habit</p>
+      <div class="habit-grid">
+        <label for="habitName"></label>
+        <input
+          type="text"
+          v-model="newHabitName"
+          id="habitName"
+          placeholder="Enter habit name"
+          required
+        />
+      </div>
     </div>
 
-    <div class="category-selection">
+    <div class="category-selection category-tiles">
       <h3>Select Category:</h3>
       <div class="categories">
         <CategoryComponent
           v-for="category in categories"
           :key="category.name"
+          class="habit-option"
           :categoryName="category.name"
           :iconName="category.icon"
-          @click="selectCategory(category.name)"
           :class="{ selected: selectedCategory === category.name }"
+          @click="selectCategory(category.name)"
         />
       </div>
     </div>
-    <button type="submit">Add Habit</button>
+    <button @click="addHabit">Add Habit</button>
   </form>
 </template>
 
 <style scoped>
 form {
   display: flex;
-  margin-bottom: 20px;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+
+.habit-selection {
+  text-align: center;
+  padding: 20px;
+  color: #9e6240;
+  width: 100%;
+}
+
+.habit-grid {
+  width: 100%;
+}
+
+.habit-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.habit-option img {
+  width: 40px;
+  height: 40px;
+}
+
+.habit-option.selected {
+  border: 2px solid #007bff;
 }
 
 .categories {
@@ -84,6 +123,13 @@ form {
 }
 
 .category-selection {
+  margin-top: 20px;
+}
+
+.category-tiles {
+  display: grid;
+  grid-template-columns: repeat(2 1fr);
+  gap: 10px;
   margin-top: 20px;
 }
 
@@ -98,12 +144,23 @@ input {
 }
 
 button {
-  margin-top: 20px;
-  padding: 10px 20px;
   background-color: #007bff;
   color: white;
+  padding: 10px 20px;
   border: none;
   cursor: pointer;
   border-radius: 4px;
+}
+
+@media (min-width: 600px) {
+  .category-tiles {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 768px) {
+  .main-view {
+    flex-direction: row;
+  }
 }
 </style>
