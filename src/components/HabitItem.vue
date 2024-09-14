@@ -53,6 +53,7 @@ onMounted(() => {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
+  color: #9e6240;
 }
 
 .habit-item label {

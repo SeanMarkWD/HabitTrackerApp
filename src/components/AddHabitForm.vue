@@ -85,6 +85,10 @@ form {
   width: 100%;
 }
 
+h3 {
+  color: #9e6240;
+}
+
 .habit-selection {
   text-align: center;
   padding: 20px;
@@ -105,6 +109,8 @@ form {
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   cursor: pointer;
+  width: 120px;
+  height: 120px;
 }
 
 .habit-option img {
@@ -117,20 +123,22 @@ form {
 }
 
 .categories {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Two columns layout */
+  gap: 10px;
+  justify-items: center;
 }
 
 .category-selection {
+  text-align: center;
   margin-top: 20px;
 }
 
 .category-tiles {
-  display: grid;
-  grid-template-columns: repeat(2 1fr);
-  gap: 10px;
   margin-top: 20px;
+  justify-content: center; /* Center the tiles */
+  align-items: center; /* Align vertically */
+  gap: 16px;
 }
 
 .selected {
