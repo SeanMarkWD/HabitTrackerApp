@@ -33,9 +33,23 @@ function navigateToDay(day) {
   router.push(`/day/${day}`);
 }
 
+function formatDayName(day) {
+  const date = new Date(day);
+  return date.toLocaleDateString('en-us', { weekday: 'short' });
+}
+
+function formatDayNumber(day) {
+  const date = new Date(day);
+  return date.getDate();
+}
+
 function loadHabits() {
   const storedHabits = JSON.parse(localStorage.getItem(date.value)) || habits.value;
-  habits.value = storedHabits;
+  if (storedHabits && storedHabits.length > 0) {
+    habits.value = storedHabits;
+  } else {
+    habits.value = [];
+  }
 }
 
 function addHabitToList(newHabit) {
@@ -55,11 +69,6 @@ function addHabitToList(newHabit) {
   });
 }
 
-// function updateHabits(updatedHabits) {
-//   habits.value = updatedHabits;
-//   saveHabits(date.value, habits.value);
-// }
-
 function saveHabits(date, habits) {
   localStorage.setItem(date, JSON.stringify(habits));
 }
@@ -71,7 +80,15 @@ loadHabits();
   <div class="main-view">
     <header>
       <nav class="nav-buttons">
-        <button @click="navigateToDay(day)" v-for="day in past7Days" :key="day">{{ day }}</button>
+        <button
+          @click="navigateToDay(day)"
+          v-for="day in past7Days"
+          :key="day"
+          :class="{ 'selected-date': day === date }"
+        >
+          <span class="day-name">{{ formatDayName(day) }}</span>
+          <span class="day-number">{{ formatDayNumber(day) }}</span>
+        </button>
       </nav>
       <AddHabitForm @habit-added="addHabitToList" />
     </header>
