@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import MainView from '../views/MainView.vue';
+import HabitListView from '../views/HabitListView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,6 +16,12 @@ const router = createRouter({
         const today = new Date().toISOString().split('T')[0];
         return `/day/${today}`;
       },
+    },
+    {
+      path: '/manage-habits',
+      name: 'HabitListView',
+      props: route => ({ habits: JSON.parse(route.query.habits || '[]') }),
+      component: HabitListView,
     },
     {
       path: '/about',

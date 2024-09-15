@@ -1,14 +1,19 @@
 <script setup>
-import { ref, watch } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import AddHabitForm from '../components/AddHabitForm.vue';
 import HabitItem from '../components/HabitItem.vue';
 
 const router = useRouter();
-const past7Days = ref(generatePast7Days());
-const habits = ref([]);
+
+onMounted(() => {
+  const today = new Date().toISOString().split('T')[0];
+  router.push(`/day/${today}`);
+});
 
 const date = ref(router.currentRoute.value.params.date);
+const habits = ref([]);
+console.log(date.value);
 
 watch(
   () => router.currentRoute.value.params.date,
@@ -29,8 +34,36 @@ function generatePast7Days() {
   return days;
 }
 
+const past7Days = ref(generatePast7Days());
+
+function loadHabits() {
+  const storedHabits = JSON.parse(localStorage.getItem(date.value)) || [];
+  habits.value = storedHabits;
+}
+
+function saveHabits(updatedHabits) {
+  localStorage.setItem(date.value, JSON.stringify(updatedHabits));
+  habits.value = updatedHabits; // Update state
+}
+
+function addHabitToList(newHabit) {
+  const updatedHabits = [...habits.value, newHabit];
+  saveHabits(updatedHabits);
+}
+
+function updateHabitCompletion(habitName, isCompleted) {
+  const updatedHabits = habits.value.map(habit =>
+    habit.name === habitName ? { ...habit, isCompleted } : habit,
+  );
+  saveHabits(updatedHabits);
+}
+
 function navigateToDay(day) {
   router.push(`/day/${day}`);
+}
+
+function navigateToManageHabits() {
+  router.push({ name: 'HabitListView', query: { habits: JSON.stringify(habits.value) } });
 }
 
 function formatDayName(day) {
@@ -43,36 +76,6 @@ function formatDayNumber(day) {
   return date.getDate();
 }
 
-function loadHabits() {
-  const storedHabits = JSON.parse(localStorage.getItem(date.value)) || habits.value;
-  if (storedHabits && storedHabits.length > 0) {
-    habits.value = storedHabits;
-  } else {
-    habits.value = [];
-  }
-}
-
-function addHabitToList(newHabit) {
-  habits.value.push(newHabit);
-  saveHabits(date.value, habits.value);
-
-  const currentDate = new Date(date.value);
-  past7Days.value.forEach(day => {
-    const dayDate = new Date(day);
-    if (dayDate >= currentDate) {
-      let dayHabits = JSON.parse(localStorage.getItem(day)) || [];
-      if (!dayHabits.find(habit => habit.name === newHabit.name)) {
-        dayHabits.push(newHabit);
-        saveHabits(day, dayHabits);
-      }
-    }
-  });
-}
-
-function saveHabits(date, habits) {
-  localStorage.setItem(date, JSON.stringify(habits));
-}
-
 loadHabits();
 </script>
 
@@ -81,16 +84,19 @@ loadHabits();
     <header>
       <nav class="nav-buttons">
         <button
-          @click="navigateToDay(day)"
           v-for="day in past7Days"
           :key="day"
           :class="{ 'selected-date': day === date }"
+          @click="navigateToDay(day)"
         >
           <span class="day-name">{{ formatDayName(day) }}</span>
           <span class="day-number">{{ formatDayNumber(day) }}</span>
         </button>
       </nav>
-      <AddHabitForm @habit-added="addHabitToList" />
+      <div class="habit-adder-container">
+        <AddHabitForm @habit-added="addHabitToList" />
+        <button class="manage-habits-button" @click="navigateToManageHabits">Manage Habits</button>
+      </div>
     </header>
     <main>
       <div class="habit-list">
@@ -98,9 +104,9 @@ loadHabits();
           <HabitItem
             v-for="habit in habits"
             :key="habit.name"
-            :habitName="habit.name"
-            :isCompleted="habit.isCompleted"
-            :iconName="habit.icon"
+            :habit-name="habit.name"
+            :is-completed="habit.isCompleted"
+            :icon-name="habit.icon"
           />
         </ul>
       </div>
@@ -154,6 +160,20 @@ nav a:first-of-type {
   flex-direction: column;
   align-items: center; /* Center the input and tiles */
   width: 100%;
+}
+
+.manage-habits-button {
+  margin-top: 10px;
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.manage-habits-button:hover {
+  background-color: #0056b3;
 }
 
 @media (width >= 1024px) {

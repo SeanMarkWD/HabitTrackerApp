@@ -68,11 +68,11 @@ a,
     align-items: center;
   }
 
-  .habit-details {
+  /* .habit-details {
     margin: 0 auto;
     width: 100%;
     text-align: center;
-  }
+  } */
 
   .nav-buttons {
     flex: 1 1 48%;
@@ -82,6 +82,7 @@ a,
     display: block;
     width: 100%;
     margin: 0.5rem 0;
+    color: #9e6240;
   }
 
   .habit-list {
@@ -113,9 +114,9 @@ a,
     align-items: flex-start;
   }
 
-  .habit-details {
+  /* .habit-details {
     width: 80%;
-  }
+  } */
 
   .habit-list {
     width: 50%;
@@ -167,9 +168,9 @@ a,
     justify-content: space-around;
   }
 
-  .habit-details {
+  /* .habit-details {
     width: 50%;
-  }
+  } */
 
   .habit-list {
     width: 30%;
@@ -178,5 +179,6 @@ a,
   .habit-item {
     width: 90%;
     margin: 0.75rem 0;
+    color: #9e6240;
   }
 }

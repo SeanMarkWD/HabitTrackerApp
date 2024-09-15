@@ -37,13 +37,13 @@ function deleteHabit() {
 
 <template>
   <div class="habit-manager">
-    <div class="habit-actions">
+    <div v-if="isEditing" class="habit-actions">
       <button @click="startEditMode">Edit</button>
       <button @click="stopHabit">Stop</button>
       <button @click="deleteHabit">Delete</button>
     </div>
 
-    <div v-if="isEditing">
+    <div v-else>
       <input v-model="newHabitName" placeholder="Edit habit name" />
       <button @click="saveEdit">Save</button>
       <button @click="cancelEdit">Cancel</button>

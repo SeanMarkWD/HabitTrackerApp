@@ -1,65 +1,101 @@
 <script setup>
+import { ref } from 'vue';
 import HabitItem from '../components/HabitItem.vue';
 import HabitManager from '../components/HabitManager.vue';
 
 const props = defineProps({
-  habits: Array,
+  habits: {
+    type: Array,
+    required: true,
+    default: () => [],
+  },
 });
 
 const emit = defineEmits(['update-habits']);
 
+const localHabits = ref([...props.habits]);
+function generatePast7Days() {
+  const days = [];
+  for (let i = 0; i < 7; i++) {
+    const date = new Date();
+    date.setDate(date.getDate() - i);
+    days.push(date.toISOString().split('T')[0]);
+  }
+  return days;
+}
+
+const past7Days = ref(generatePast7Days());
+
+function saveHabits() {
+  localStorage.setItem('habits', JSON.stringify(localHabits.value));
+}
+
+function saveHabitsToLocalStorage() {
+  console.log('Saving habits to localStorage:', localHabits.value);
+  localStorage.setItem('habits', JSON.stringify(localHabits.value));
+}
+
 function updateHabitStatus(habitName, isCompleted) {
-  const updatedHabits = props.habits.map(habit =>
+  const updatedHabits = localHabits.value.map(habit =>
     habit.name === habitName ? { ...habit, isCompleted } : habit,
   );
-  emit('update-habits', updatedHabits);
+  localHabits.value = updatedHabits;
+  emit('update-habits', localHabits.value);
+  saveHabitsToLocalStorage();
 }
 
 function editHabit(newHabitName, oldHabitName) {
-  const updatedHabits = props.habits.map(habit =>
+  const updatedHabits = localHabits.value.map(habit =>
     habit.name === oldHabitName ? { ...habit, name: newHabitName } : habit,
   );
-  emit('update-habits', updatedHabits);
+  emit('update-habits', localHabits.value);
+  saveHabitsToLocalStorage();
 }
 
 function stopHabit(habitName) {
   const currentDate = new Date().toISOString().split('T')[0];
   const updatedHabits = props.habits.filter(habit => habit.name !== habitName);
+  localHabits.value = updatedHabits;
   emit('update-habits', updatedHabits);
+  saveHabitsToLocalStorage();
 
   const futureDates = past7Days.value.filter(day => new Date(day) >= new Date(currentDate));
   futureDates.forEach(day => {
     let dayHabits = JSON.parse(localStorage.getItem(day)) || [];
-    dayHabits = dayHabits.filter(habit.name !== habitName);
-    saveHabits(day, dayHabits);
+    dayHabits = dayHabits.filter(habit => habit.name !== habitName);
+    localStorage.setItem(day, JSON.stringify(dayHabits));
   });
 }
 
 function deleteHabit(habitName) {
-  const updatedHabits = props.habits.filter(habit => habit.name !== habitName);
+  const updatedHabits = localHabits.value.filter(habit => habit.name !== habitName);
+  localHabits.value = updatedHabits;
   emit('update-habits', updatedHabits);
+  saveHabitsToLocalStorage();
 
   past7Days.value.forEach(day => {
     let dayHabits = JSON.parse(localStorage.getItem(day)) || [];
     dayHabits = dayHabits.filter(habit => habit.name !== habitName);
-    saveHabits(day, dayHabits);
+    localStorage.setItem(day, JSON.stringify(dayHabits));
   });
 }
 </script>
 
 <template>
   <div class="habit-list-view">
+    <h2>Manage Your Habits</h2>
     <ul class="habit-list card flex-column">
-      <li v-for="(habit, index) in habits" :key="habit.name + index" class="habit-name">
-        <div class="habit-details">
+      <li v-for="(habit, index) in habits" :key="habit.name + index">
+        <span>{{ habit.name }}</span>
+        <div class="habit-item">
           <HabitItem
-            :habitName="habit.name"
-            :isCompleted="habit.isCompleted"
-            :iconName="habit.category"
-            @update:isCompleted="updateHabitStatus(habit.name, $event)"
+            :habit-name="habit.name"
+            :is-completed="habit.isCompleted"
+            :icon-name="habit.category"
+            @update:is-completed="updateHabitStatus(habit.name, $event)"
           />
           <HabitManager
-            :habitName="habit.name"
+            :habit-name="habit.name"
             @edit-habit="editHabit"
             @stop-habit="stopHabit"
             @delete-habit="deleteHabit"
@@ -73,6 +109,7 @@ function deleteHabit(habitName) {
 <style scoped>
 .habit-list-view {
   margin: 20px 0;
+  color: #9e6240;
 }
 
 .habit-list {

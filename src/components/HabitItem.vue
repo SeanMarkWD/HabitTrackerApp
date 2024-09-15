@@ -1,8 +1,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
-import HabitStreak from './HabitStreak.vue';
 import IconComponent from './IconComponent.vue';
+import HabitCheckbox from './HabitCheckbox.vue';
 
 const props = defineProps({
   habitName: String,
@@ -11,33 +10,17 @@ const props = defineProps({
 });
 
 const isCompleted = ref(props.isCompleted);
-const router = useRouter();
 
-function saveHabits() {
-  const date = router.currentRoute.value.params.date;
-  const currentHabits = JSON.parse(localStorage.getItem(date)) || [];
-  const updatedHabits = currentHabits.map(habit =>
-    habit.name === props.habitName ? { ...habit, isCompleted: isCompleted.value } : habit,
-  );
-  localStorage.setItem(date, JSON.stringify(updatedHabits));
-}
-
-const iconPath = computed(() => {
-  return new URL(`../assets/icons/${props.iconName}.svg`, import.meta.url).href;
-});
-console.log(props.iconName);
-onMounted(() => {
-  console.log('iconName', props.iconName);
-});
+const iconPath = computed(
+  () => new URL(`../assets/icons/${props.iconName}.svg`, import.meta.url).href,
+);
 </script>
 
 <template>
   <li class="habit-item">
     <label>
-      <IconComponent :iconName="iconName" />
-      <input type="checkbox" v-model="isCompleted" @change="saveHabits" />
+      <IconComponent :icon-name="iconName" />
       <span>{{ habitName }}</span>
-      <HabitStreak :habitName="habitName" :isCompleted="isCompleted" />
     </label>
   </li>
 </template>
@@ -53,7 +36,6 @@ onMounted(() => {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
-  color: #9e6240;
 }
 
 .habit-item label {
