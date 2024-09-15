@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import MainView from '../views/MainView.vue';
 import HabitListView from '../views/HabitListView.vue';
+import AddHabitView from '../views/AddHabitView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,6 +17,11 @@ const router = createRouter({
         const today = new Date().toISOString().split('T')[0];
         return `/day/${today}`;
       },
+    },
+    {
+      path: '/add-habit',
+      name: 'AddHabit',
+      component: AddHabitView,
     },
     {
       path: '/manage-habits',

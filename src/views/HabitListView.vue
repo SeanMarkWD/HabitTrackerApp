@@ -26,10 +26,6 @@ function generatePast7Days() {
 
 const past7Days = ref(generatePast7Days());
 
-function saveHabits() {
-  localStorage.setItem('habits', JSON.stringify(localHabits.value));
-}
-
 function saveHabitsToLocalStorage() {
   console.log('Saving habits to localStorage:', localHabits.value);
   localStorage.setItem('habits', JSON.stringify(localHabits.value));

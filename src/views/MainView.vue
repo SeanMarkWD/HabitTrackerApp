@@ -1,28 +1,12 @@
 <script setup>
-import { ref, watch, onMounted } from 'vue';
+import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import AddHabitForm from '../components/AddHabitForm.vue';
 import HabitItem from '../components/HabitItem.vue';
+import AddHabitForm from '../components/AddHabitForm.vue';
 
 const router = useRouter();
-
-onMounted(() => {
-  const today = new Date().toISOString().split('T')[0];
-  router.push(`/day/${today}`);
-});
-
 const date = ref(router.currentRoute.value.params.date);
-const habits = ref([]);
-console.log(date.value);
-
-watch(
-  () => router.currentRoute.value.params.date,
-  newDate => {
-    date.value = newDate;
-    loadHabits();
-  },
-  { immediate: true },
-);
+const today = new Date().toISOString().split('T')[0];
 
 function generatePast7Days() {
   const days = [];
@@ -36,9 +20,28 @@ function generatePast7Days() {
 
 const past7Days = ref(generatePast7Days());
 
+const habits = ref([]);
+
 function loadHabits() {
   const storedHabits = JSON.parse(localStorage.getItem(date.value)) || [];
   habits.value = storedHabits;
+}
+
+watch(
+  () => router.currentRoute.value.params.date,
+  newDate => {
+    date.value = newDate;
+    loadHabits();
+  },
+  { immediate: true },
+);
+
+function navigateToAddHabit() {
+  router.push('/add-habit');
+}
+
+function navigateToDay(day) {
+  router.push(`/day/${day}`);
 }
 
 function saveHabits(updatedHabits) {
@@ -49,17 +52,6 @@ function saveHabits(updatedHabits) {
 function addHabitToList(newHabit) {
   const updatedHabits = [...habits.value, newHabit];
   saveHabits(updatedHabits);
-}
-
-function updateHabitCompletion(habitName, isCompleted) {
-  const updatedHabits = habits.value.map(habit =>
-    habit.name === habitName ? { ...habit, isCompleted } : habit,
-  );
-  saveHabits(updatedHabits);
-}
-
-function navigateToDay(day) {
-  router.push(`/day/${day}`);
 }
 
 function navigateToManageHabits() {
@@ -86,7 +78,7 @@ loadHabits();
         <button
           v-for="day in past7Days"
           :key="day"
-          :class="{ 'selected-date': day === date }"
+          :class="{ 'selected-date': day === date, 'today-date': day === today }"
           @click="navigateToDay(day)"
         >
           <span class="day-name">{{ formatDayName(day) }}</span>
@@ -174,6 +166,16 @@ nav a:first-of-type {
 
 .manage-habits-button:hover {
   background-color: #0056b3;
+}
+
+.selected-date {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.today-date {
+  background-color: #ffa500; /* Highlight today's date with orange */
+  color: #fff;
 }
 
 @media (width >= 1024px) {
