@@ -90,8 +90,8 @@ loadHabits();
         </button>
       </nav>
       <div class="habit-adder-container">
-        <button @click="navigateToAddHabit">Add New Habit</button>
-        <button class="manage-habits-button" @click="navigateToManageHabits">Manage Habits</button>
+        <button class="habits-button" @click="navigateToAddHabit">Add New Habit</button>
+        <button class="habits-button" @click="navigateToManageHabits">Manage Habits</button>
       </div>
     </header>
     <main>
@@ -164,7 +164,7 @@ nav a:first-of-type {
   width: 100%;
 }
 
-.manage-habits-button {
+.habits-button {
   margin-top: 10px;
   padding: 8px 16px;
   background-color: #007bff;
@@ -174,7 +174,7 @@ nav a:first-of-type {
   cursor: pointer;
 }
 
-.manage-habits-button:hover {
+.habits-button:hover {
   background-color: #0056b3;
 }
 

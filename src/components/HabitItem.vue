@@ -9,11 +9,17 @@ const props = defineProps({
   iconName: String,
 });
 
+const emit = defineEmits(['update:isCompleted']);
+
 const isCompleted = ref(props.isCompleted);
 
 const iconPath = computed(
   () => new URL(`../assets/icons/${props.iconName}.svg`, import.meta.url).href,
 );
+
+function handleCheckboxChange(newStatus) {
+  emit('update:isCompleted', newStatus);
+}
 </script>
 
 <template>
@@ -21,6 +27,11 @@ const iconPath = computed(
     <label>
       <IconComponent :icon-name="iconName" />
       <span>{{ habitName }}</span>
+      <HabitCheckbox
+        :habit-name="habitName"
+        :is-completed="isCompleted"
+        @update:is-completed="handleCheckboxChange"
+      />
     </label>
   </li>
 </template>
