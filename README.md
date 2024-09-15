@@ -1,37 +1,12 @@
-# habit-tracker app
+##Habit Tracker
 
-This template should help get you started developing with Vue 3 in Vite.
+A responsive habit tracking application built with Vue.js. This app allows users to add daily habits, view a 7-day habit history, and manage their daily goals, all while keeping track of their streaks.
 
-## Recommended IDE Setup
+#Features
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
-
-# HabitTrackerApp
+*Add Habits: Users can add new habits, categorize them, and track them over time.
+*Select Categories: Habits can be organized into various categories, such as Workout, Diet, Music, etc.
+*Habit Streaks: Keep track of how long you've maintained a habit.
+*Date Picker: View habits by specific days and navigate through past 7 days.
+*Responsive Design: Mobile-first approach with fully responsive layouts for tablets and desktops.
+*Data Persistence: All habits are stored in the browser's localStorage, so users don't lose their data on refresh.
