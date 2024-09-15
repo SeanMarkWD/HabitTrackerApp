@@ -1,12 +1,12 @@
 <script setup>
-import { ref, watch } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import HabitItem from '../components/HabitItem.vue';
-import AddHabitForm from '../components/AddHabitForm.vue';
+import HabitStreak from '../components/HabitStreak.vue';
 
 const router = useRouter();
 const date = ref(router.currentRoute.value.params.date);
-const today = new Date().toISOString().split('T')[0];
+const today = ref(new Date().toISOString().split('T')[0]);
 
 function generatePast7Days() {
   const days = [];
@@ -26,6 +26,10 @@ function loadHabits() {
   const storedHabits = JSON.parse(localStorage.getItem(date.value)) || [];
   habits.value = storedHabits;
 }
+
+onMounted(() => {
+  loadHabits();
+});
 
 watch(
   () => router.currentRoute.value.params.date,
@@ -86,20 +90,27 @@ loadHabits();
         </button>
       </nav>
       <div class="habit-adder-container">
-        <AddHabitForm @habit-added="addHabitToList" />
+        <button @click="navigateToAddHabit">Add New Habit</button>
         <button class="manage-habits-button" @click="navigateToManageHabits">Manage Habits</button>
       </div>
     </header>
     <main>
       <div class="habit-list">
         <ul>
-          <HabitItem
-            v-for="habit in habits"
-            :key="habit.name"
-            :habit-name="habit.name"
-            :is-completed="habit.isCompleted"
-            :icon-name="habit.icon"
-          />
+          <li v-for="habit in habits" :key="habit.name">
+            <HabitItem
+              v-for="habit in habits"
+              :key="habit.name"
+              :habit-name="habit.name"
+              :is-completed="habit.isCompleted"
+              :icon-name="habit.icon"
+            />
+            <HabitStreak
+              v-if="habit.name && habit.isCompleted !== undefined"
+              :habit-name="habit.name"
+              :is-completed="habit.isCompleted"
+            />
+          </li>
         </ul>
       </div>
     </main>

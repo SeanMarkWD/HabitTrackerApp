@@ -33,6 +33,11 @@ function addHabit() {
 
     emit('habit-added', newHabit);
 
+    const currentDate = new Date().toISOString().split('T')[0];
+    const existingHabits = JSON.parse(localStorage.getItem(currentDate)) || [];
+    existingHabits.push(newHabit);
+    localStorage.setItem(currentDate, JSON.stringify(existingHabits));
+
     newHabitName.value = '';
     selectedCategory.value = null;
   } else {
@@ -47,11 +52,11 @@ function addHabit() {
       <h2>Choose Habit</h2>
       <p>Choose your daily habit</p>
       <div class="habit-grid">
-        <label for="habitName"></label>
+        <label for="habitName" />
         <input
-          type="text"
-          v-model="newHabitName"
           id="habitName"
+          v-model="newHabitName"
+          type="text"
           placeholder="Enter habit name"
           required
         />
@@ -65,8 +70,8 @@ function addHabit() {
           v-for="category in categories"
           :key="category.name"
           class="habit-option"
-          :categoryName="category.name"
-          :iconName="category.icon"
+          :category-name="category.name"
+          :icon-name="category.icon"
           :class="{ selected: selectedCategory === category.name }"
           @click="selectCategory(category.name)"
         />
