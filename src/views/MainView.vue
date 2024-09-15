@@ -99,7 +99,6 @@ loadHabits();
         <ul>
           <li v-for="habit in habits" :key="habit.name">
             <HabitItem
-              v-for="habit in habits"
               :key="habit.name"
               :habit-name="habit.name"
               :is-completed="habit.isCompleted"
