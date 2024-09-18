@@ -1,51 +1,27 @@
 <script setup>
 import { ref, watch, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { calculateStreak } from '../store/streakStore';
 
 const props = defineProps({
   habitName: String,
   isCompleted: Boolean,
 });
 
-const streak = ref(0);
 const router = useRouter();
+const streak = ref(0);
 
-function calculateStreak() {
-  let currentStreak = 0;
-  const currentDate = new Date(router.currentRoute.value.params.date);
-
-  if (isNaN(currentDate.getTime())) {
-    console.error('Invalid date in route params.');
-    return;
-  }
-
-  // Loop to check previous days for habit streak
-  while (true) {
-    currentDate.setDate(currentDate.getDate() - 1);
-    const previousDate = currentDate.toISOString().split('T')[0];
-
-    const previousHabits = JSON.parse(localStorage.getItem(previousDate)) || [];
-    const previousHabit = previousHabits.find(h => h.name === props.habitName);
-
-    if (!previousHabit || !previousHabit.isCompleted) {
-      break;
-    }
-
-    currentStreak += 1;
-  }
-
-  if (props.isCompleted) {
-    streak.value = currentStreak + 1;
-  } else {
-    streak.value = 0;
-  }
+function updateStreak() {
+  streak.value = props.isCompleted
+    ? calculateStreak(props.habitName, router.currentRoute.value.params.date) + 1
+    : 0;
 }
 
 onMounted(() => {
-  calculateStreak();
+  updateStreak();
 });
 
-watch(() => props.isCompleted, calculateStreak);
+watch(() => props.isCompleted, updateStreak);
 </script>
 
 <template>

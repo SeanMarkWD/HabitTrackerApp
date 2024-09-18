@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { computed } from 'vue';
 import IconComponent from './IconComponent.vue';
 import HabitCheckbox from './HabitCheckbox.vue';
 
@@ -11,7 +11,7 @@ const props = defineProps({
 
 const emit = defineEmits(['update:isCompleted']);
 
-const isCompleted = ref(props.isCompleted);
+const { isCompleted } = props;
 
 const iconPath = computed(
   () => new URL(`../assets/icons/${props.iconName}.svg`, import.meta.url).href,
@@ -20,6 +20,7 @@ const iconPath = computed(
 function handleCheckboxChange(newStatus) {
   emit('update:isCompleted', newStatus);
 }
+console.log(isCompleted.value);
 </script>
 
 <template>

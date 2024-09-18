@@ -4,16 +4,15 @@ const props = defineProps({
   isCompleted: Boolean,
 });
 
-const emit = defineEmits(['updated:isCompleted']);
+const emit = defineEmits(['update:isCompleted']); // Fix: Change to 'update:isCompleted'
 
 function toggleCheckbox() {
-  emit('update:isCompleted', !props.isCompleted);
+  emit('update:isCompleted', !props.isCompleted); // Emit the correct event name
 }
 </script>
 
 <template>
   <label>
     <input type="checkbox" :checked="isCompleted" @change="toggleCheckbox" />
-    {{ habitName }}
   </label>
 </template>

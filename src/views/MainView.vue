@@ -3,23 +3,13 @@ import { ref, watch, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import HabitItem from '../components/HabitItem.vue';
 import HabitStreak from '../components/HabitStreak.vue';
+import { generatePast7Days } from '../store/dateStore';
 
 const router = useRouter();
 const date = ref(router.currentRoute.value.params.date);
 const today = ref(new Date().toISOString().split('T')[0]);
 
-function generatePast7Days() {
-  const days = [];
-  for (let i = 0; i < 7; i++) {
-    const date = new Date();
-    date.setDate(date.getDate() - i);
-    days.push(date.toISOString().split('T')[0]);
-  }
-  return days;
-}
-
 const past7Days = ref(generatePast7Days());
-
 const habits = ref([]);
 
 function loadHabits() {
@@ -40,17 +30,24 @@ watch(
   { immediate: true },
 );
 
+function saveHabits(updatedHabits) {
+  localStorage.setItem(date.value, JSON.stringify(updatedHabits));
+  habits.value = updatedHabits; // Update state
+}
+
+function handleHabitCompletion(habit) {
+  return newStatus => {
+    habit.isCompleted = newStatus;
+    saveHabits([...habits.value]); // Save updated habits to localStorage
+  };
+}
+
 function navigateToAddHabit() {
   router.push('/add-habit');
 }
 
 function navigateToDay(day) {
   router.push(`/day/${day}`);
-}
-
-function saveHabits(updatedHabits) {
-  localStorage.setItem(date.value, JSON.stringify(updatedHabits));
-  habits.value = updatedHabits; // Update state
 }
 
 function addHabitToList(newHabit) {
@@ -103,6 +100,7 @@ loadHabits();
               :habit-name="habit.name"
               :is-completed="habit.isCompleted"
               :icon-name="habit.icon"
+              @update:is-completed="handleHabitCompletion(habit)"
             />
             <HabitStreak
               v-if="habit.name && habit.isCompleted !== undefined"
