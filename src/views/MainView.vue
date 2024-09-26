@@ -32,13 +32,13 @@ watch(
 
 function saveHabits(updatedHabits) {
   localStorage.setItem(date.value, JSON.stringify(updatedHabits));
-  habits.value = updatedHabits; // Update state
+  habits.value = updatedHabits;
 }
 
 function handleHabitCompletion(habit) {
   return newStatus => {
     habit.isCompleted = newStatus;
-    saveHabits([...habits.value]); // Save updated habits to localStorage
+    saveHabits([...habits.value]);
   };
 }
 
@@ -48,11 +48,6 @@ function navigateToAddHabit() {
 
 function navigateToDay(day) {
   router.push(`/day/${day}`);
-}
-
-function addHabitToList(newHabit) {
-  const updatedHabits = [...habits.value, newHabit];
-  saveHabits(updatedHabits);
 }
 
 function navigateToManageHabits() {

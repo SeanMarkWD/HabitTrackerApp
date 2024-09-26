@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import CategoryComponent from './CategoryComponent.vue';
+import { generateNext7Days } from '../store/dateStore';
 
 const newHabitName = ref('');
 const selectedCategory = ref(null);
@@ -33,10 +34,14 @@ function addHabit() {
 
     emit('habit-added', newHabit);
 
-    const currentDate = new Date().toISOString().split('T')[0];
-    const existingHabits = JSON.parse(localStorage.getItem(currentDate)) || [];
-    existingHabits.push(newHabit);
-    localStorage.setItem(currentDate, JSON.stringify(existingHabits));
+    const next7Days = generateNext7Days();
+    console.log(next7Days);
+
+    next7Days.forEach(day => {
+      const existingHabits = JSON.parse(localStorage.getItem(day)) || [];
+      existingHabits.push(newHabit);
+      localStorage.setItem(day, JSON.stringify(existingHabits));
+    });
 
     newHabitName.value = '';
     selectedCategory.value = null;

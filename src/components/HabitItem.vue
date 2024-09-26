@@ -20,7 +20,6 @@ const iconPath = computed(
 function handleCheckboxChange(newStatus) {
   emit('update:isCompleted', newStatus);
 }
-console.log(isCompleted.value);
 </script>
 
 <template>
