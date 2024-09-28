@@ -3,13 +3,14 @@ import { ref, watch, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import HabitItem from '../components/HabitItem.vue';
 import HabitStreak from '../components/HabitStreak.vue';
-import { generatePast7Days } from '../store/dateStore';
+import { generatePast7Days, generateNext7Days } from '../store/dateStore';
 
 const router = useRouter();
 const date = ref(router.currentRoute.value.params.date);
 const today = ref(new Date().toISOString().split('T')[0]);
 
-const past7Days = ref(generatePast7Days());
+const past7Days = ref([]);
+const next7Days = ref([]);
 const habits = ref([]);
 
 function loadHabits() {
@@ -19,6 +20,8 @@ function loadHabits() {
 
 onMounted(() => {
   loadHabits();
+  past7Days.value = generatePast7Days();
+  next7Days.value = generateNext7Days();
 });
 
 watch(
@@ -35,11 +38,9 @@ function saveHabits(updatedHabits) {
   habits.value = updatedHabits;
 }
 
-function handleHabitCompletion(habit) {
-  return newStatus => {
-    habit.isCompleted = newStatus;
-    saveHabits([...habits.value]);
-  };
+function handleHabitCompletion(habit, newStatus) {
+  habit.isCompleted = newStatus;
+  saveHabits([...habits.value]);
 }
 
 function navigateToAddHabit() {
@@ -63,8 +64,6 @@ function formatDayNumber(day) {
   const date = new Date(day);
   return date.getDate();
 }
-
-loadHabits();
 </script>
 
 <template>

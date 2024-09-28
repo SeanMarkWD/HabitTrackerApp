@@ -1,7 +1,7 @@
 <script setup>
 import { ref, watch, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { calculateStreak } from '../store/streakStore';
+import { calculateStreak, useStreak } from '../store/streakStore';
 
 const props = defineProps({
   habitName: String,
@@ -9,7 +9,7 @@ const props = defineProps({
 });
 
 const router = useRouter();
-const streak = ref(0);
+const streak = useStreak();
 
 function updateStreak() {
   streak.value = props.isCompleted
@@ -18,10 +18,15 @@ function updateStreak() {
 }
 
 onMounted(() => {
-  updateStreak();
+  calculateStreak(props.habitName, props.isCompleted, new Date());
 });
 
-watch(() => props.isCompleted, updateStreak);
+watch(
+  () => props.isCompleted,
+  () => {
+    calculateStreak(props.habitName, props.isCompleted, new Date());
+  },
+);
 </script>
 
 <template>

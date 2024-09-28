@@ -1,17 +1,18 @@
 import { ref } from 'vue';
+import { generatePast7Days } from './dateStore';
 
 const streak = ref(0);
 
-export function calculateStreak() {
+export function calculateStreak(habitName, isCompleted, currentDate) {
   let currentStreak = 0;
   const date = new Date(currentDate);
 
-  while (true) {
-    currentDate.setDate(currentDate.getDate() - 1);
-    const previousDate = currentDate.toISOString().split('T')[0];
+  const pastDays = generatePast7Days();
 
+  for (let i = 0; i < pastDays.length; i++) {
+    const previousDate = pastDays[i];
     const previousHabits = JSON.parse(localStorage.getItem(previousDate)) || [];
-    const previousHabit = previousHabits.find(h => h.name === props.habitName);
+    const previousHabit = previousHabits.find(h => h.name === habitName);
 
     if (!previousHabit || !previousHabit.isCompleted) {
       break;
@@ -20,9 +21,13 @@ export function calculateStreak() {
     currentStreak += 1;
   }
 
-  if (props.isCompleted) {
+  if (isCompleted) {
     streak.value = currentStreak + 1;
   } else {
     streak.value = 0;
   }
+}
+
+export function useStreak() {
+  return streak;
 }
