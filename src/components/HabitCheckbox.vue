@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 
-const { habitName, isCompleted } = defineProps({
+const props = defineProps({
   habitName: String,
   isCompleted: Boolean,
 });
@@ -9,13 +9,13 @@ const { habitName, isCompleted } = defineProps({
 const emit = defineEmits(['update:isCompleted']);
 
 function toggleCheckbox() {
-  emit('update:isCompleted', !isCompleted);
+  emit('update:isCompleted', !props.isCompleted);
 }
 </script>
 
 <template>
-  <label :class="{ 'checked-habit': isCompleted, 'unchecked-habit': !isCompleted }">
-    <input type="checkbox" :checked="isCompleted" @change="toggleCheckbox" />
+  <label :class="{ 'checked-habit': props.isCompleted, 'unchecked-habit': !props.isCompleted }">
+    <input type="checkbox" :checked="props.isCompleted" @change="toggleCheckbox" />
     {{ habitName }}
   </label>
 </template>
