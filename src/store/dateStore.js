@@ -15,7 +15,7 @@ export function generateNext7Days() {
   for (let i = 0; i < 7; i++) {
     const nextDay = new Date(today);
     nextDay.setDate(today.getDate() + i);
-    days.push(today.toISOString().split('T')[0]);
+    days.push(nextDay.toISOString().split('T')[0]);
   }
   return days;
 }

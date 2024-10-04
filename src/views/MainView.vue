@@ -94,10 +94,10 @@ function formatDayNumber(day) {
               :habit-name="habit.name"
               :is-completed="habit.isCompleted"
               :icon-name="habit.icon"
-              @update:is-completed="handleHabitCompletion(habit)"
+              @update:is-completed="handleHabitCompletion(habit, $event)"
             />
             <HabitStreak
-              v-if="habit.name && habit.isCompleted !== undefined"
+              v-if="habit.name"
               :habit-name="habit.name"
               :is-completed="habit.isCompleted"
             />

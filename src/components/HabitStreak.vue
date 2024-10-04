@@ -1,6 +1,6 @@
 <script setup>
 import { ref, watch, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 import { calculateStreak, useStreak } from '../store/streakStore';
 
 const props = defineProps({
@@ -8,23 +8,17 @@ const props = defineProps({
   isCompleted: Boolean,
 });
 
-const router = useRouter();
+const route = useRoute();
 const streak = useStreak();
 
-function updateStreak() {
-  streak.value = props.isCompleted
-    ? calculateStreak(props.habitName, router.currentRoute.value.params.date) + 1
-    : 0;
-}
-
 onMounted(() => {
-  calculateStreak(props.habitName, props.isCompleted, new Date());
+  calculateStreak(props.habitName, props.isCompleted, new Date(route.params.date));
 });
 
 watch(
   () => props.isCompleted,
-  () => {
-    calculateStreak(props.habitName, props.isCompleted, new Date());
+  newStatus => {
+    calculateStreak(props.habitName, newStatus, new Date(route.params.date));
   },
 );
 </script>
