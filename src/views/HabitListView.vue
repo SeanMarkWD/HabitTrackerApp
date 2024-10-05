@@ -13,7 +13,8 @@ const props = defineProps({
 
 const emit = defineEmits(['update-habits']);
 
-const localHabits = ref([...props.habits]);
+const localHabits = ref(props.habits);
+
 function generatePast7Days() {
   const days = [];
   for (let i = 0; i < 7; i++) {
@@ -36,7 +37,7 @@ function updateHabitStatus(habitName, isCompleted) {
     habit.name === habitName ? { ...habit, isCompleted } : habit,
   );
   localHabits.value = updatedHabits;
-  emit('update-habits', localHabits.value);
+  emit('update-habits', updatedHabits);
   saveHabitsToLocalStorage();
 }
 
@@ -44,6 +45,7 @@ function editHabit(newHabitName, oldHabitName) {
   const updatedHabits = localHabits.value.map(habit =>
     habit.name === oldHabitName ? { ...habit, name: newHabitName } : habit,
   );
+  localHabits.value = updatedHabits;
   emit('update-habits', localHabits.value);
   saveHabitsToLocalStorage();
 }
