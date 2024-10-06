@@ -21,6 +21,7 @@ function generatePast7Days() {
     const date = new Date();
     date.setDate(date.getDate() - i);
     days.push(date.toISOString().split('T')[0]);
+    localStorage.setItem('days', JSON.stringify(localHabits.value));
   }
   return days;
 }
@@ -47,6 +48,7 @@ function editHabit(newHabitName, oldHabitName) {
   );
   localHabits.value = updatedHabits;
   emit('update-habits', localHabits.value);
+  console.log(updatedHabits);
   saveHabitsToLocalStorage();
 }
 
