@@ -35,7 +35,6 @@ function addHabit() {
     emit('habit-added', newHabit);
 
     const next7Days = generateNext7Days();
-    console.log(next7Days);
 
     next7Days.forEach(day => {
       const existingHabits = JSON.parse(localStorage.getItem(day)) || [];
@@ -45,8 +44,6 @@ function addHabit() {
 
     newHabitName.value = '';
     selectedCategory.value = null;
-  } else {
-    console.log('Please enter a habit name and select a category.');
   }
 }
 </script>
@@ -146,8 +143,8 @@ h3 {
 
 .category-tiles {
   margin-top: 20px;
-  justify-content: center; /* Center the tiles */
-  align-items: center; /* Align vertically */
+  justify-content: center;
+  align-items: center;
   gap: 16px;
 }
 

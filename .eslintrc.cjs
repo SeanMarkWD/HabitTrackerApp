@@ -1,5 +1,3 @@
-// Here we are using CommonJS modules instead of ES modules.
-// That is also the reason why we are using .cjs file extension.
 module.exports = {
   root: true,
   env: {

@@ -154,7 +154,7 @@ nav a:first-of-type {
 .habit-adder-container {
   display: flex;
   flex-direction: column;
-  align-items: center; /* Center the input and tiles */
+  align-items: center;
   width: 100%;
 }
 
@@ -178,7 +178,7 @@ nav a:first-of-type {
 }
 
 .today-date {
-  background-color: #ffa500; /* Highlight today's date with orange */
+  background-color: #ffa500;
   color: #fff;
 }
 
