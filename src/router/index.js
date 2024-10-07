@@ -26,12 +26,23 @@ const router = createRouter({
     {
       path: '/manage-habits',
       name: 'HabitListView',
-      props: route => ({ habits: JSON.parse(route.query.habits || '[]') }),
+      props: route => {
+        try {
+          // Decode the URL-encoded string and then parse it as JSON
+          return { habits: JSON.parse(decodeURIComponent(route.query.habits || '[]')) };
+        } catch (e) {
+          console.error('Failed to parse habits:', e);
+          return { habits: [] };
+        }
+      },
       component: HabitListView,
     },
     {
       path: '/about',
       name: 'About',
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
       component: () => import('../views/AboutView.vue'),
     },
   ],
