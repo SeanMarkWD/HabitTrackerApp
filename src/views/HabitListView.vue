@@ -2,6 +2,10 @@
 import { ref } from 'vue';
 import HabitItem from '../components/HabitItem.vue';
 import HabitManager from '../components/HabitManager.vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+const query = router.currentRoute.value.query;
 
 const props = defineProps({
   habits: {
@@ -13,7 +17,14 @@ const props = defineProps({
 
 const emit = defineEmits(['update-habits']);
 
-const localHabits = ref(props.habits);
+const selectedDate = ref(query.date || new Date().toISOString().split('T')[0]);
+
+function loadHabitsForDate() {
+  const days = JSON.parse(localStorage.getItem('days')) || {};
+  return days[selectedDate.value] || [];
+}
+
+const localHabits = ref(props.habits, loadHabitsForDate());
 
 function generatePast7Days() {
   const days = [];
@@ -30,7 +41,9 @@ const past7Days = ref(generatePast7Days());
 
 function saveHabitsToLocalStorage() {
   console.log('Saving habits to localStorage:', localHabits.value);
-  localStorage.setItem('habits', JSON.stringify(localHabits.value));
+  const days = JSON.parse(localStorage.getItem('days')) || {};
+  days[selectedDate.value] = localHabits.value;
+  localStorage.setItem('days', JSON.stringify(localHabits.value));
 }
 
 function updateHabitStatus(habitName, isCompleted) {
@@ -48,7 +61,6 @@ function editHabit(newHabitName, oldHabitName) {
   );
   localHabits.value = updatedHabits;
   emit('update-habits', localHabits.value);
-  console.log(updatedHabits);
   saveHabitsToLocalStorage();
 }
 
@@ -83,7 +95,7 @@ function deleteHabit(habitName) {
 
 <template>
   <div class="habit-list-view">
-    <h2>Manage Your Habits</h2>
+    <h2>Manage Your Habits for {{ selectedDate }}</h2>
     <ul class="habit-list card flex-column">
       <li v-for="(habit, index) in habits" :key="habit.name + index">
         <span>{{ habit.name }}</span>

@@ -52,7 +52,9 @@ function navigateToDay(day) {
 }
 
 function navigateToManageHabits() {
-  router.push({ name: 'HabitListView', query: { habits: JSON.stringify(habits.value) } });
+  const encodedHabits = encodeURIComponent(JSON.stringify(habits.value));
+  const currentDate = encodeURIComponent(date.value);
+  router.push({ name: 'HabitListView', query: { habits: encodedHabits, date: currentDate } });
 }
 
 function formatDayName(day) {
