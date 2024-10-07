@@ -1,6 +1,6 @@
 # Habit Tracker App
 
-responsive habit tracking application built with Vue.js. This app allows users to add daily habits, view a 7-day habit history, and manage their daily goals, all while keeping track of their streaks.
+responsive habit tracking application built with Vue.js. This app allows users to add daily habits, view a 7-day habit history, and manage their daily goals, all while keeping track of their streaks. Users can also edit, stop, cancel, or delete habits as needed.
 
 ## Features
 
@@ -10,6 +10,7 @@ responsive habit tracking application built with Vue.js. This app allows users t
 - Date Picker: View habits by specific days and navigate through past 7 days.
 - Responsive Design: Mobile-first approach with fully responsive layouts for tablets and desktops.
 - Data Persistence: All habits are stored in the browser's localStorage, so users don't lose their data on refresh.
+- Manage Habits: Users are able to edit, stop, cancel and delete habits.
 
 ## Tech Stack
 
@@ -71,6 +72,11 @@ cd habit-tracker
 3. Track Completion:
    Mark a habit as complete by checking the checkbox next to each habit.
    View your current streak for each habit.
+
+4. Manage Habits:
+   - Edit: In the "Manage Habits" view, click "Edit" next to a habit to change its name. Save or cancel the edit.
+   - Stop Habit: Use the "Stop" button to remove a habit from future days without deleting past records.
+   - Delete: Use the "Delete" button to permanently remove a habit from all days.
 
 ## Design Approach
 
