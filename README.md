@@ -25,7 +25,7 @@ responsive habit tracking application built with Vue.js. This app allows users t
 
 ```bash
   git clone https://github.com/SeanMarkWD/HabitTrackerApp.git
-cd habit-tracker
+cd HabitTrackerApp
 ```
 
 2. Install dependencies:
